@@ -17,13 +17,13 @@ Usage
 const parseKML = require('parse-kml');
 // Read KML From URL
 parseKML
-  .toKML('https://developers.google.com/kml/documentation/KML_Samples.kml')
+  .readKml('https://developers.google.com/kml/documentation/KML_Samples.kml')
   .then(console.log);
   .catch(console.error);
  
 // Read KML From File
 parseKML
-  .toKML('./path-to-file/file-name.kml')
+  .readKml('./path-to-file/file-name.kml')
   .then(console.log);
   .catch(console.error);
   
