@@ -1,0 +1,27 @@
+{
+  "name": "parse-kml",
+  "version": "1.0.0",
+  "description": "Parse KML Files",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "KML",
+    "KMZ",
+    "JSON",
+    "parse KML",
+    "parse KMZ",
+    "map"
+  ],
+  "author": "Ahmed ElMetwally <ahmed.el.metwally.official@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.0",
+    "togeojson": "^0.16.0",
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
+}
