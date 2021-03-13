@@ -19,7 +19,7 @@
   "dependencies": {
     "request": "^2.88.0",
     "togeojson": "^0.16.0",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.5.0"
   },
   "devDependencies": {
     "mocha": "^6.2.0"
