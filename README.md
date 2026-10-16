@@ -1,6 +1,7 @@
 parse-kml
 ===========
 [![npm](https://img.shields.io/npm/v/parse-kml.svg)](https://www.npmjs.com/package/parse-kml)
+[![test](https://github.com/AhmedElMetwally/parse-kml/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/AhmedElMetwally/parse-kml/actions/workflows/test.yml?query=branch%3Amaster)
 
 Ever had the urge to parse KML? And wanted to access the data in some sane,
 easy way? Don't want to compile a C parser, for whatever reason? Then parse-kml is
@@ -11,11 +12,28 @@ Converts KML (from a local file or a URL) to [GeoJSON](https://geojson.org/).
 Installation
 ============
 
-```bash
-npm install parse-kml
-```
+Check your project's Node.js version with `node -v`, then:
 
-Requires Node.js 18 or newer.
+| Your project's Node.js | Install | Version |
+| --- | --- | --- |
+| 18 or newer (new projects) | `npm install parse-kml` | 2.x (latest) |
+| 12, 14 or 16 (old projects) | `npm install parse-kml@legacy` | 1.x ([docs](https://github.com/AhmedElMetwally/parse-kml/tree/v1#readme)) |
+
+Both lines are tested on every push, on every Node.js version from 12 to 24:
+
+| Node.js | 12 | 14 | 16 | 18 | 20 | 22 | 24 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2.x | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
+| 1.1.x | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+### Old project already using 1.0.x?
+
+- **Staying on Node 12–16:** run `npm update parse-kml`. Your `^1.0.x` range picks up 1.1.x, with the same API and no code changes.
+- **Moving to 2.x:** you need Node 18+. Run `npm install parse-kml@latest`. The API is the same, but run your tests:
+  2.x uses a newer GeoJSON converter, so a few results can differ slightly
+  (for example, the Google `KML_Samples.kml` gives 21 features on 2.x and 20 on 1.x).
+
+npm never moves you from 1.x to 2.x on its own. A `^1.0.0` range stays on 1.x until you upgrade on purpose.
 
 Usage
 =====
@@ -60,6 +78,10 @@ Need KMZ? See [parse-kmz](https://www.npmjs.com/package/parse-kmz).
 
 Changelog
 =========
+
+**2.0.1**
+- Documented which version to use on which Node.js version; added CI for Node.js 18 to 24.
+- Released 1.1.0 (`npm install parse-kml@legacy`) for projects on Node.js 12 to 16.
 
 **2.0.0**
 - Requires Node.js 18+ (uses built-in `fetch`; the deprecated `request` package is gone).

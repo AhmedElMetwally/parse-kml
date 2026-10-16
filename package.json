@@ -1,10 +1,10 @@
 {
   "name": "parse-kml",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Parse KML Files",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "node --test test/parse-kml.spec.js"
   },
   "keywords": [
     "KML",
@@ -19,9 +19,6 @@
   "dependencies": {
     "@tmcw/togeojson": "^7.1.3",
     "@xmldom/xmldom": "^0.9.12"
-  },
-  "devDependencies": {
-    "mocha": "^12.0.3"
   },
   "engines": {
     "node": ">=18"

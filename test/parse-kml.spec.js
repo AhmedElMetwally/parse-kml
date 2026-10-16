@@ -1,12 +1,11 @@
 const assert = require('assert');
+const { describe, it } = require('node:test');
 const parseKML = require('../index');
 
 const URL = 'https://developers.google.com/kml/documentation/KML_Samples.kml';
 const FILE = './kml-files/KML_Samples.kml';
 
 describe('#0 Read KML', function() {
-  this.timeout(20000);
-
   it('Read KML File From URL', async function() {
     const res = await parseKML.readKml(URL);
     assert.strictEqual(typeof res, 'string');
@@ -23,8 +22,6 @@ describe('#0 Read KML', function() {
 });
 
 describe('#1 To JSON', function() {
-  this.timeout(20000);
-
   it('Parse KML File From URL', async function() {
     const res = await parseKML.toJson(URL);
     assert.strictEqual(res.type, 'FeatureCollection');
