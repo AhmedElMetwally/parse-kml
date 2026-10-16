@@ -1,28 +1,32 @@
 module.exports = (function() {
   const fs = require('fs');
-  const request = require('request');
-  const togeojson = require('togeojson');
-  const xmldom = new (require('xmldom')).DOMParser();
+  const http = require('http');
+  const https = require('https');
+  const togeojson = require('@tmcw/togeojson');
+  const { DOMParser } = require('@xmldom/xmldom');
 
-  /**
-   *
-   * @param {string} path
-   *
-   * @returns { string }
-   */
-  const readKml = path => {
+  const download = (url, redirects = 5) => {
     return new Promise((resolve, reject) => {
-      if (path.indexOf('http') === 0) {
-        request(path, (err, _response, body) => {
-          if (err) return reject(err);
-          resolve(body);
-        });
-      } else {
-        fs.readFile(path, (err, data) => {
-          if (err) return reject(err);
-          resolve(data.toString());
-        });
-      }
+      const client = /^https:/i.test(url) ? https : http;
+      client
+        .get(url, res => {
+          const { statusCode, headers } = res;
+          if (statusCode >= 300 && statusCode < 400 && headers.location && redirects > 0) {
+            res.resume();
+            resolve(download(new URL(headers.location, url).href, redirects - 1));
+            return;
+          }
+          if (statusCode < 200 || statusCode >= 300) {
+            res.resume();
+            reject(new Error(`Failed to fetch ${url}: ${statusCode}`));
+            return;
+          }
+          const chunks = [];
+          res.on('data', chunk => chunks.push(chunk));
+          res.on('end', () => resolve(Buffer.concat(chunks)));
+          res.on('error', reject);
+        })
+        .on('error', reject);
     });
   };
 
@@ -30,16 +34,24 @@ module.exports = (function() {
    *
    * @param {string} path
    *
-   * @returns { Object }
+   * @returns { Promise<string> }
    */
-  const toJson = path => {
-    return new Promise((resolve, reject) => {
-      readKml(path)
-        .then(res => xmldom.parseFromString(res))
-        .then(res => togeojson.kml(res))
-        .then(resolve)
-        .catch(reject);
-    });
+  const readKml = async path => {
+    if (/^https?:\/\//i.test(path)) {
+      return (await download(path)).toString('utf8');
+    }
+    return fs.promises.readFile(path, 'utf8');
+  };
+
+  /**
+   *
+   * @param {string} path
+   *
+   * @returns { Promise<Object> }
+   */
+  const toJson = async path => {
+    const kml = await readKml(path);
+    return togeojson.kml(new DOMParser().parseFromString(kml, 'text/xml'));
   };
 
   return {
